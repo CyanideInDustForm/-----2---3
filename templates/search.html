@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Поиск и Добавление{% endblock %}
+{% block content %}
+<h2 style="text-align:center;">Выберите таблицу для поиска или добавления</h2>
+
+<!-- Блок для flash-сообщений -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div style="max-width: 600px; margin: 0 auto 20px auto;">
+      {% for category, message in messages %}
+        <div style="padding: 10px; border-radius: 5px; margin-bottom: 10px;
+                    color: white;
+                    {% if category == 'error' %}background-color: #dc3545;{% else %}background-color: #28a745;{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<form method="POST">
+    <select name="table" onchange="this.form.submit()">
+        <option disabled selected>-- Таблица --</option>
+        {% for t in tables %}
+            <option value="{{ t }}" {% if selected_table == t %}selected{% endif %}>{{ t }}</option>
+        {% endfor %}
+    </select>
+</form>
+
+{% if selected_table %}
+<form method="POST">
+    <input type="hidden" name="table" value="{{ selected_table }}">
+    {% for col in columns %}
+        <input type="text" name="{{ col }}" placeholder="{{ col }}" value="{{ request.form.get(col, '') }}">
+    {% endfor %}
+    <button name="submit" value="Поиск">Поиск</button>
+    <button name="submit" value="Добавить">Добавить</button>
+</form>
+
+<table>
+    {% if result %}
+        <tr>
+            {% for col in columns %}
+                <th>{{ col }}</th>
+            {% endfor %}
+        </tr>
+        {% for row in result %}
+            <tr>
+                {% for item in row %}
+                    <td>{{ item }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    {% endif %}
+</table>
+{% endif %}
+{% endblock %}

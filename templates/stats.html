@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Статистика{% endblock %}
+{% block content %}
+<h2 style="text-align:center;">Статистика таблиц</h2>
+<table>
+    <tr><th>Таблица</th><th>Кол-во записей</th></tr>
+    {% for table, count in stats.items() %}
+        <tr><td>{{ table }}</td><td>{{ count }}</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

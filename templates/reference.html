@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Справка{% endblock %}
+{% block content %}
+<h2 style="text-align:center;">Справка по 3D-пакетам</h2>
+<ol>
+    {% for row in products %}
+        <li>
+            {% for i in range(columns|length) %}
+                <strong>{{ columns[i] }}:</strong> {{ row[i] }}<br>
+            {% endfor %}
+        </li>
+    {% endfor %}
+</ol>
+{% endblock %}
